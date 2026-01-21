@@ -27,9 +27,12 @@ const firebaseAuth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export const FirebaseProvider = (props) => {
+  const [user, setUser] = useState(null);
+
   useEffect(() => {
     onAuthStateChanged(firebaseAuth, (user) => {
-      console.log(user);
+      if (user) setUser(user);
+      else setUser(null);
     });
   }, []);
 
@@ -40,6 +43,7 @@ export const FirebaseProvider = (props) => {
     signInWithEmailAndPassword(firebaseAuth, email, password);
 
   const signinWithGoogle = () => signInWithPopup(firebaseAuth, provider);
+  const isLoggedIn = user ? true : false;
 
   return (
     <FirebaseContext.Provider
@@ -47,6 +51,7 @@ export const FirebaseProvider = (props) => {
         signupUserWithEmailAndPassword,
         signinUserWithEmailAndPassword,
         signinWithGoogle,
+        isLoggedIn,
       }}
     >
       {props.children}

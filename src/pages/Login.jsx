@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFirebase } from "../context/Firebase";
+import { useNavigate } from "react-router";
 
 const Login = () => {
   const firebase = useFirebase();
+  const navigate = useNavigate();
   const [userCredential, setUserCredential] = useState({});
 
   const handleChange = (e) => {
@@ -12,13 +14,22 @@ const Login = () => {
     });
   };
 
+  useEffect(() => {
+    if (firebase.isLoggedIn) {
+      debugger;
+      navigate("/");
+    } else {
+      debugger;
+      navigate("/login");
+    }
+  }, [firebase, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await firebase.signinUserWithEmailAndPassword(
       userCredential.email,
       userCredential.password,
     );
-    console.log(response);
   };
 
   const handleSignInWithGoogle = async () => {
@@ -65,7 +76,7 @@ const Login = () => {
       </form>
       <button
         type="submit"
-        className="bg-blue-800 py-2 px-4 w-auto rounded-md cursor-pointer active:scale-95 hover:bg-blue-700 transition-colors"
+        className="bg-red-800 py-2 px-4 w-auto rounded-md cursor-pointer active:scale-95 hover:bg-red-700 transition-colors"
         onClick={handleSignInWithGoogle}
       >
         Sign In with Google
