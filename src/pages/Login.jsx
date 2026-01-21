@@ -16,7 +16,6 @@ const Login = () => {
 
   useEffect(() => {
     if (firebase.isLoggedIn) {
-      debugger;
       navigate("/");
     } else {
       debugger;

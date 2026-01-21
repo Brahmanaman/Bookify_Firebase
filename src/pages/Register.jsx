@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useFirebase } from "../context/Firebase";
+import { useNavigate } from "react-router";
 
 const Register = () => {
   const firebase = useFirebase();
+  const navigate = useNavigate();
   const [userCredential, setUserCredential] = useState({});
 
   const handleChange = (e) => {
@@ -11,6 +13,15 @@ const Register = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    if (firebase.isLoggedIn) {
+      navigate("/");
+    } else {
+      debugger;
+      navigate("/login");
+    }
+  }, [firebase, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
